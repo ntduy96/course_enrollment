@@ -1,0 +1,4 @@
+root = true
+indent-style = space
+indent-size = 2
+trim_trailing_whitespace = true
