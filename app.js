@@ -60,6 +60,8 @@ app.post('/login', function(req, res) {
         maxAge: 1000 * 60 * 15 // would expire after 15 minutes
       }
       res.cookie('username', req.body.username, options);
+      res.cookie('fname', results[0].fname, options);
+      res.cookie('lname', results[0].lname, options);
       // req.cookies.username = req.body.username; //username will be stored in session
       res.redirect('/user');
     } else {
@@ -90,14 +92,14 @@ app.post('/signup', function(req, res) {
   };
 
   connection.query('INSERT INTO user SET ?', user, function(err, results) {
-    if (results.affectedRows === 1) {
-      //user registered successfully :)
-      res.cookie('message', 'Your account was created, please log in!!:)', { path: '/login', maxAge: 3000 });
-      res.redirect('/login');
-    } else {
+    if (err) {
       //Username or email is already used, please try another username or email!!:(
       res.cookie('message', 'Username or email is already used, please try another username or email!!:(', { path: '/signup', maxAge: 3000 });
       res.redirect('/signup');
+    } else {
+      //user registered successfully :)
+      res.cookie('message', 'Your account was created, please log in!!:)', { path: '/login', maxAge: 3000 });
+      res.redirect('/login');
     }
   });
 });
@@ -122,7 +124,7 @@ app.get('/user', function(req, res) {
       connection.query(queryStr, [req.cookies.username], function(err, results) {
         var enrolls = results;
         res.render('user', {
-          message: 'Welcome ' + req.cookies.username,
+          message: 'Welcome ' + req.cookies.fname + ' ' + req.cookies.lname,
           courses: courses,
           enrolls: enrolls
         });
