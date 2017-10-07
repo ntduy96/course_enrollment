@@ -25,8 +25,7 @@ app.use(cookieParser());
 var connection = require('./connection');
 
 app.get('/', function(req, res) {
-  // req.session.username = 'ntduy96';
-  if (!req.session.username) {
+  if (!req.cookies.username) {
     res.redirect('/login');
   } else {
     res.redirect('/user');
@@ -35,7 +34,6 @@ app.get('/', function(req, res) {
 
 //show login page
 app.get('/login', function(req, res) {
-  // res.sendFile(path.join(application_root, 'public', 'login.html'));
   if (!req.cookies.username) {
     res.render('login', { message: req.cookies.message });
   } else {
@@ -66,7 +64,6 @@ app.post('/login', function(req, res) {
 });
 // show sign up page
 app.get('/signup', function(req, res) {
-  // res.sendFile(path.join(application_root, 'public', 'signup.html'));
   if (!req.cookies.username) {
     res.render('signup', { message: req.cookies.message });
   } else {
@@ -76,7 +73,6 @@ app.get('/signup', function(req, res) {
 // handle data form sign up
 app.post('/signup', function(req, res) {
   var user = {
-    id: uniqid(),
     username: req.body.username,
     fname: req.body.fname,
     lname: req.body.lname,
@@ -113,7 +109,7 @@ app.get('/user', function(req, res) {
   if (req.cookies.username) {
     connection.query('SELECT * FROM course', function(err, results) {
       var courses = results;
-      var queryStr = 'SELECT DISTINCT c.* FROM enroll e INNER JOIN user u ON u.id = e.student INNER JOIN course c ON c.id = e.course WHERE u.username = ? ORDER BY c.id';
+      var queryStr = 'SELECT DISTINCT c.* FROM enroll e INNER JOIN student s ON s.username = e.student INNER JOIN course c ON c.id = e.course WHERE s.username = ? ORDER BY c.id';
       connection.query(queryStr, [req.cookies.username], function(err, results) {
         var enrolls = results;
         res.render('user', {
@@ -122,9 +118,7 @@ app.get('/user', function(req, res) {
           enrolls: enrolls
         });
       });
-
     });
-
   } else {
     res.cookie('message', 'Please log in first!!:)', { path: '/login', maxAge: 3000 });
     res.redirect('/login');
