@@ -6,25 +6,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>User</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1><%= message %></h1>
-  <form action='/logout' method='POST'>
-    <input type="submit" name="logout" value="Log out">
-  </form>
+  <h1>
+    <%= message %>
+  </h1>
+  <!-- list all the courses in database -->
   <h2>All courses</h2>
   <ul>
     <% courses.forEach(function (course) { %>
-      <li><%= course.id + ' ' + course.name + ' ' + course.description %></li>
-    <% }) %>
+      <li>
+        <b><%= course.id %></b>
+        <%= course.name + ' ' + course.description %>
+      </li>
+      <% }) %>
   </ul>
+  <!-- list all courses this user already enrolled -->
   <h2>Enrolled</h2>
   <ul>
     <% enrolls.forEach(function (enroll) { %>
-      <li><%= enroll.id + ' ' + enroll.name + ' ' + enroll.description %></li>
-    <% }) %>
+      <li>
+        <b><%= enroll.id %></b>
+        <%= enroll.name + ' ' + enroll.description %>
+      </li>
+      <% }) %>
   </ul>
+  <!-- send a post request to log out -->
+  <form action='/logout' method='POST'>
+    <input type="submit" class="button" name="logout" value="Log out">
+  </form>
 </body>
 
 </html>
