@@ -4,9 +4,7 @@ var application_root = __dirname,
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
   errorHandler = require('errorhandler'),
-  session = require('express-session'),
   cookieParser = require('cookie-parser'),
-  uniqid = require('uniqid'),
   ejs = require('ejs');
 
 //initialize an express server
@@ -22,11 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 app.use(cookieParser());
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: true
-}));
 
 //import connection to mysql
 var connection = require('./connection');
