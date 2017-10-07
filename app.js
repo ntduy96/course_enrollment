@@ -69,7 +69,7 @@ app.post('/login', function(req, res) {
     }
   });
 });
-
+// show sign up page
 app.get('/signup', function(req, res) {
   // res.sendFile(path.join(application_root, 'public', 'signup.html'));
   if (!req.cookies.username) {
@@ -78,7 +78,7 @@ app.get('/signup', function(req, res) {
     res.redirect('/user');
   }
 });
-
+// handle data form sign up
 app.post('/signup', function(req, res) {
   var user = {
     id: uniqid(),
@@ -102,6 +102,7 @@ app.post('/signup', function(req, res) {
   });
 });
 
+// log out request handler
 app.post('/logout', function(req, res) {
   if (!req.cookies.username) {
     res.cookie('message', 'Please log in first!!:)', { path: '/login', maxAge: 3000 });
@@ -112,6 +113,7 @@ app.post('/logout', function(req, res) {
   }
 });
 
+// show user page
 app.get('/user', function(req, res) {
   if (req.cookies.username) {
     connection.query('SELECT * FROM course', function(err, results) {
