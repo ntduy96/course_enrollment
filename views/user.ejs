@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>User</title>
+</head>
+
+<body>
+  <h1><%= message %></h1>
+  <form action='/logout' method='POST'>
+    <input type="submit" name="logout" value="Log out">
+  </form>
+  <h2>All courses</h2>
+  <ul>
+    <% courses.forEach(function (course) { %>
+      <li><%= course.id + ' ' + course.name + ' ' + course.description %></li>
+    <% }) %>
+  </ul>
+  <h2>Enrolled</h2>
+  <ul>
+    <% enrolls.forEach(function (enroll) { %>
+      <li><%= enroll.id + ' ' + enroll.name + ' ' + enroll.description %></li>
+    <% }) %>
+  </ul>
+</body>
+
+</html>

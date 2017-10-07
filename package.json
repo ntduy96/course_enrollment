@@ -20,5 +20,17 @@
   "bugs": {
     "url": "https://github.com/ntduy96/course_enrollment/issues"
   },
-  "homepage": "https://github.com/ntduy96/course_enrollment#readme"
+  "homepage": "https://github.com/ntduy96/course_enrollment#readme",
+  "devDependencies": {
+    "errorhandler": "^1.5.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express-session": "^1.15.6",
+    "method-override": "^2.3.10",
+    "mysql": "^2.14.1",
+    "uniqid": "^4.1.1"
+  }
 }
