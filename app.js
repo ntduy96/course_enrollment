@@ -49,7 +49,7 @@ app.post('/login', function(req, res) {
       var options = {
         path: '/',
         maxAge: 1000 * 60 * 15 // would expire after 15 minutes
-      }
+      };
       res.cookie('username', req.body.username, options);
       res.cookie('fname', results[0].fname, options);
       res.cookie('lname', results[0].lname, options);
