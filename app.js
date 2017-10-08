@@ -43,7 +43,7 @@ app.get('/login', function(req, res) {
 
 //process data from login form submission
 app.post('/login', function(req, res) {
-  connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [req.body.username, req.body.password], function(err, results) {
+  connection.query('SELECT * FROM student WHERE username = ? AND password = ?', [req.body.username, req.body.password], function(err, results) {
     if (results.length === 1) {
       // user loged in successfully :)
       var options = {
@@ -72,7 +72,7 @@ app.get('/signup', function(req, res) {
 });
 // handle data form sign up
 app.post('/signup', function(req, res) {
-  var user = {
+  var student = {
     username: req.body.username,
     fname: req.body.fname,
     lname: req.body.lname,
@@ -80,7 +80,7 @@ app.post('/signup', function(req, res) {
     password: req.body.password
   };
 
-  connection.query('INSERT INTO user SET ?', user, function(err, results) {
+  connection.query('INSERT INTO student SET ?', student, function(err, results) {
     if (err) {
       //Username or email is already used, please try another username or email!!:(
       res.cookie('message', 'Username or email is already used, please try another username or email!!:(', { path: '/signup', maxAge: 3000 });
