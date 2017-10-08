@@ -16,4 +16,6 @@ connection.connect(function(err) {
   console.log('connected as id ' + connection.threadId);
 });
 
+connection.query('SET NAMES \'utf8\'');
+
 module.exports = connection;
