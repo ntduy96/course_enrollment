@@ -18,8 +18,8 @@
   <ul>
     <% courses.forEach(function (course) { %>
       <li>
-        <b><%= course.id %></b>
-        <%= course.name + ' ' + course.description %>
+        <b><%= course.course_id %></b>
+        <%= course.course_name + ' ' + course.course_desc %>
       </li>
       <% }) %>
   </ul>
@@ -28,8 +28,8 @@
   <ul>
     <% enrolls.forEach(function (enroll) { %>
       <li>
-        <b><%= enroll.id %></b>
-        <%= enroll.name + ' ' + enroll.description %>
+        <b><%= enroll.course_id %></b>
+        <%= enroll.course_name + ' ' + enroll.course_desc %>
       </li>
       <% }) %>
   </ul>
