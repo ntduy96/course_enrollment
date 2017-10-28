@@ -6,7 +6,6 @@ var application_root = __dirname,
   errorHandler = require('errorhandler'),
   session = require('express-session'),
   cookieParser = require('cookie-parser'),
-  uniqid = require('uniqid'),
   ejs = require('ejs');
 
 //initialize an express server
@@ -83,7 +82,6 @@ app.get('/signup', function(req, res) {
 // handle data form sign up
 app.post('/signup', function(req, res) {
   var user = {
-    id: uniqid(),
     username: req.body.username,
     fname: req.body.fname,
     lname: req.body.lname,
