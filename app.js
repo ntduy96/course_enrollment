@@ -32,7 +32,7 @@ var connection = require('./connection');
 
 app.get('/', function(req, res) {
   // req.session.username = 'ntduy96';
-  if (!req.session.username) {
+  if (!req.session.user) {
     res.redirect('/login');
   } else {
     res.redirect('/user');
@@ -41,9 +41,18 @@ app.get('/', function(req, res) {
 
 //show login page
 app.get('/login', function(req, res) {
-  // res.sendFile(path.join(application_root, 'public', 'login.html'));
-  if (!req.cookies.username) {
-    res.render('login', { message: req.cookies.message });
+  if (!req.session.user) {
+    // authenticate failed
+    if (req.query.status === 'failed') {
+      var message = 'Username or password is wrong, please try again!!:(';
+    }
+
+    // signed up successfully but need to log in
+    if (req.query.status === 'success' && req.query.action === 'signup') {
+      var message = 'You signed up successfully, please log in :)';
+    }
+
+    res.render('login', { 'message': message });
   } else {
     res.redirect('/user');
   }
@@ -54,27 +63,27 @@ app.post('/login', function(req, res) {
   connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [req.body.username, req.body.password], function(err, results) {
     if (results.length === 1) {
       // user loged in successfully :)
-      var options = {
-        path: '/',
-        maxAge: 1000 * 60 * 15 // would expire after 15 minutes
+      req.session.user = {
+        username: results[0].username,
+        fname: results[0].fname,
+        lname: results[0].lname,
+        email: results[0].email
       }
-      res.cookie('username', req.body.username, options);
-      res.cookie('fname', results[0].fname, options);
-      res.cookie('lname', results[0].lname, options);
-      // req.cookies.username = req.body.username; //username will be stored in session
       res.redirect('/user');
     } else {
       //Username or password is wrong, please try again!!:(
-      res.cookie('message', 'Username or password is wrong, please try again!!:(', { path: '/login', maxAge: 3000 });
-      res.redirect('/login');
+      res.redirect('/login?status=failed');
     }
   });
 });
+
 // show sign up page
 app.get('/signup', function(req, res) {
-  // res.sendFile(path.join(application_root, 'public', 'signup.html'));
-  if (!req.cookies.username) {
-    res.render('signup', { message: req.cookies.message });
+  if (!req.session.user) {
+    if (req.query.status === 'failed') {
+      var message = 'Username or email is already used, please try another username or email!!:(';
+    }
+    res.render('signup', { 'message': message });
   } else {
     res.redirect('/user');
   }
@@ -91,47 +100,54 @@ app.post('/signup', function(req, res) {
 
   connection.query('INSERT INTO user SET ?', user, function(err, results) {
     if (err) {
-      //Username or email is already used, please try another username or email!!:(
-      res.cookie('message', 'Username or email is already used, please try another username or email!!:(', { path: '/signup', maxAge: 3000 });
-      res.redirect('/signup');
+      // Username or email is already used
+      res.redirect('/signup?status=failed');
     } else {
-      //user registered successfully :)
-      res.cookie('message', 'Your account was created, please log in!!:)', { path: '/login', maxAge: 3000 });
-      res.redirect('/login');
+      // user registered successfully :)
+      res.redirect('/login?status=success&action=signup');
     }
   });
 });
 
 // log out request handler
 app.post('/logout', function(req, res) {
-  if (!req.cookies.username) {
+  if (!req.session.user) {
     res.cookie('message', 'Please log in first!!:)', { path: '/login', maxAge: 3000 });
     res.redirect('/login');
   } else {
-    res.clearCookie('username', { path: '/' });
+    req.session.destroy();
     res.redirect('/login');
   }
 });
 
 // show user page
 app.get('/user', function(req, res) {
-  if (req.cookies.username) {
-    connection.query('SELECT * FROM course', function(err, results) {
-      var courses = results;
-      var queryStr = 'SELECT DISTINCT c.* FROM enroll e INNER JOIN user u ON u.id = e.student INNER JOIN course c ON c.id = e.course WHERE u.username = ? ORDER BY c.id';
-      connection.query(queryStr, [req.cookies.username], function(err, results) {
-        var enrolls = results;
-        res.render('user', {
-          message: 'Welcome ' + req.cookies.fname + ' ' + req.cookies.lname,
-          courses: courses,
-          enrolls: enrolls
-        });
-      });
+  if (req.session.user) {
+    // connection.query('SELECT * FROM course', function(err, results) {
+    //   var courses = results;
+    //   console.log(courses);
+    //   var queryStr = 'SELECT DISTINCT c.course_id, c.course_name, c.course_desc FROM enroll e INNER JOIN user u ON u.username = e.user INNER JOIN course c ON c.course_id = e.course WHERE u.username = ? ORDER BY c.course_id';
+    //   connection.query(queryStr, [req.session.user.username], function(err, results) {
+    //     console.log(results);
+    //     var enrolls = results || [];
+    //     res.render('user', {
+    //       message: 'Welcome ' + req.session.user.fname + ' ' + req.session.user.lname,
+    //       courses: courses,
+    //       enrolls: enrolls
+    //     });
+    //   });
 
+    // });
+
+    connection.query('SELECT * FROM course; SELECT DISTINCT c.course_id, c.course_name, c.course_desc FROM enroll e INNER JOIN user u ON u.username = e.user INNER JOIN course c ON c.course_id = e.course WHERE u.username = ? ORDER BY c.course_id', [req.session.user.username], function(err, results) {
+      res.render('user', {
+        message: 'Welcome ' + req.session.user.fname + ' ' + req.session.user.lname,
+        courses: results[0], // results for the first statement
+        enrolls: results[1] // results for the second statement
+      });
     });
 
   } else {
-    res.cookie('message', 'Please log in first!!:)', { path: '/login', maxAge: 3000 });
     res.redirect('/login');
   }
 
