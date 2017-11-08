@@ -6,36 +6,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>User</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 
-<body>
-  <h1>
+<body class="container">
+  <h1 class="text-center">
     <%= message %>
   </h1>
-  <!-- list all the courses in database -->
-  <h2>All courses</h2>
-  <ul>
-    <% courses.forEach(function (course) { %>
-      <li>
-        <b><%= course.course_id %></b>
-        <%= course.course_name + ' ' + course.course_desc %>
-      </li>
-      <% }) %>
-  </ul>
+
   <!-- list all courses this user already enrolled -->
-  <h2>Enrolled</h2>
-  <ul>
-    <% enrolls.forEach(function (enroll) { %>
-      <li>
-        <b><%= enroll.course_id %></b>
-        <%= enroll.course_name + ' ' + enroll.course_desc %>
-      </li>
-      <% }) %>
-  </ul>
+  <aside class="col-md-4">
+    <h3>Your enrolled courses</h3>
+    <% if(enrolls.length > 0){ %>
+      <ul class='list-group'>
+        <% enrolls.forEach(function (enroll) { %>
+          <li class='list-group-item'>
+            <b><%= enroll.course_id %></b>
+            <%= enroll.course_name + ' ' + enroll.course_desc %>
+          </li>
+          <% }) %>
+      </ul>
+    <% } else{ %>
+      <p>You didn't enroll any courses</p>
+    <% } %>
+  </aside>
+
+
+  <!-- list all the courses in database -->
+  <main class="col-md-8">
+    <h3>All courses</h3>
+    <ul class='list-group'>
+      <% courses.forEach(function (course) { %>
+        <li class='list-group-item'>
+          <b><%= course.course_id %></b>
+          <%= course.course_name + ' ' + course.course_desc %>
+        </li>
+        <% }) %>
+    </ul>
+  </main>
+
+
   <!-- send a post request to log out -->
   <form action='/logout' method='POST'>
-    <input type="submit" class="button" name="logout" value="Log out">
+    <input type="submit" class="btn btn-danger center-block" name="logout" value="Log out">
   </form>
 </body>
 
