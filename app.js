@@ -41,17 +41,11 @@ app.use(['/login', '/signup'], function isNotLoggedIn(req, res, next) {
 var connection = require('./connection');
 
 app.get('/', function(req, res) {
-  // req.session.username = 'ntduy96';
-  // if (!req.session.user) {
   res.redirect('/login');
-  // } else {
-  //   res.redirect('/user');
-  // }
 });
 
 //show login page
 app.get('/login', function(req, res) {
-  // if (!req.session.user) {
   var message = '';
   // authenticate failed
   if (req.query.status === 'failed' && req.query.action === 'login') {
@@ -69,9 +63,6 @@ app.get('/login', function(req, res) {
   }
 
   res.render('login', { 'message': message });
-  // } else {
-  //   res.redirect('/user');
-  // }
 });
 
 //process data from login form submission
@@ -103,9 +94,6 @@ app.get('/signup', function(req, res) {
   }
 
   res.render('signup', { 'message': message });
-  // } else {
-  //   res.redirect('/user');
-  // }
 });
 // handle data form sign up
 app.post('/signup', function(req, res) {
