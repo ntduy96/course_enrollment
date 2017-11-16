@@ -20,10 +20,10 @@
     <% if(enrolls.length > 0){ %>
       <ul class='list-group'>
         <% enrolls.forEach(function (enroll) { %>
-          <li class='list-group-item'>
+          <a class='list-group-item' href=<%= '/courses/' + enroll.course_id %>>
             <b><%= enroll.course_id %></b>
             <%= enroll.course_name + ' ' + enroll.course_desc %>
-          </li>
+          </a>
           <% }) %>
       </ul>
     <% } else{ %>
@@ -37,10 +37,10 @@
     <h3>All courses</h3>
     <ul class='list-group'>
       <% courses.forEach(function (course) { %>
-        <li class='list-group-item'>
+        <a class='list-group-item' href=<%= '/courses/' + course.course_id %>>
           <b><%= course.course_id %></b>
           <%= course.course_name + ' ' + course.course_desc %>
-        </li>
+        </a>
         <% }) %>
     </ul>
   </main>
