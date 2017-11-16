@@ -86,7 +86,6 @@ app.post('/login', function(req, res) {
 
 // show sign up page
 app.get('/signup', function(req, res) {
-  // if (!req.session.user) {
   var message = '';
   // email or username is already used
   if (req.query.status === 'failed' && req.query.action === 'signup') {
