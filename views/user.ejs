@@ -22,7 +22,7 @@
         <% enrolls.forEach(function (enroll) { %>
           <a class='list-group-item' href=<%= '/courses/' + enroll.course_id %>>
             <b><%= enroll.course_id %></b>
-            <%= enroll.course_name + ' ' + enroll.course_desc %>
+            <%= enroll.course_name %>
           </a>
           <% }) %>
       </ul>
@@ -39,7 +39,7 @@
       <% courses.forEach(function (course) { %>
         <a class='list-group-item' href=<%= '/courses/' + course.course_id %>>
           <b><%= course.course_id %></b>
-          <%= course.course_name + ' ' + course.course_desc %>
+          <%= course.course_name %>
         </a>
         <% }) %>
     </ul>
