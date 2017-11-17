@@ -173,6 +173,15 @@ app.get('/courses/:id', function(req, res) {
     });
 });
 
+// handle enroll course requests
+app.post('/enroll_course', function(req, res) {
+  connection.query('INSERT INTO enroll (user, course) VALUES (?, ?)', [req.session.user.username, req.body.course_id], function(err, results) {
+    if (!err) {
+      res.redirect('back');
+    }
+  });
+});
+
 app.listen(3000, function() {
   console.log('server is running on port 3000');
 });
