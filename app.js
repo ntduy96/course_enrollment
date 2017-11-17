@@ -158,6 +158,21 @@ app.get('/user', function(req, res) {
 
 });
 
+app.get('/courses/:id', function(req, res) {
+  connection.query('SELECT * FROM course WHERE course_id = ?; SELECT * FROM enroll WHERE user = ? AND course = ?', [req.params.id, req.session.user.username, req.params.id],
+    function(err, results) {
+      if (!err) {
+        var data = {
+          'course_id': results[0][0].course_id,
+          'course_name': results[0][0].course_name,
+          'course_desc': results[0][0].course_desc || '',
+          'isEnrolled': results[1][0] ? true : false
+        };
+        res.render('course', data);
+      }
+    });
+});
+
 app.listen(3000, function() {
   console.log('server is running on port 3000');
 });
