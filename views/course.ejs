@@ -9,9 +9,10 @@
     <%=course_name%>
   </title>
   <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/public/css/ionicons.min.css">
 </head>
 
-<body class="container text-center">
+<body class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 text-center">
   <h1>
     <p class="badge">
       <%=course_id%>
@@ -21,7 +22,6 @@
     </p>
   </h1>
   <!-- display multi-paragraph -->
-  <h3 class="text-left">Course Description</h3>
   <div class="text-left">
     <% course_desc.split(/\r\n/g).forEach(function (paragraph) { %>
       <p>
