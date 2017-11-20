@@ -177,7 +177,16 @@ app.get('/courses/:id', function(req, res) {
 app.post('/enroll_course', function(req, res) {
   connection.query('INSERT INTO enroll (user, course) VALUES (?, ?)', [req.session.user.username, req.body.course_id], function(err, results) {
     if (!err) {
-      res.redirect('back');
+      res.redirect('/courses/' + req.body.course_id);
+    }
+  });
+});
+
+// handle drop course requests
+app.post('/drop_course', function(req, res) {
+  connection.query('DELETE FROM enroll WHERE user = ? AND course = ?', [req.session.user.username, req.body.course_id], function(err, results) {
+    if (!err) {
+      res.redirect('/courses/' + req.body.course_id);
     }
   });
 });
