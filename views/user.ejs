@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>User</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/ionicons.min.css">
 </head>
 
 <body class="container">
@@ -23,6 +24,7 @@
           <a class='list-group-item' href=<%= '/courses/' + enroll.course_id %>>
             <b><%= enroll.course_id %></b>
             <%= enroll.course_name %>
+            <i class='ion-chevron-right pull-right'></i>
           </a>
           <% }) %>
       </ul>
@@ -40,6 +42,7 @@
         <a class='list-group-item' href=<%= '/courses/' + course.course_id %>>
           <b><%= course.course_id %></b>
           <%= course.course_name %>
+          <i class='ion-chevron-right pull-right'></i>
         </a>
         <% }) %>
     </ul>
