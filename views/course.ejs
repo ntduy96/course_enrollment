@@ -29,7 +29,7 @@
   <% if(isEnrolled){ %>
     <form action="/drop_course" method="post" class="navbar-form">
       <input name="course_id" value="<%=course_id %>" hidden>
-      <input type="submit" value="Drop" class="btn btn-success btn-lg">
+      <input type="submit" value="Drop" class="btn btn-danger btn-lg">
     </form>
   <% } else{ %>
     <form action="/enroll_course" method="post" class="navbar-form">
